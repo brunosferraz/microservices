@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud
+  labels:
+    app: fraud
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: fraud
+      labels:
+        app: fraud
+    spec:
+      containers:
+        - name: fraud
+          image: brunosferraz/fraud:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8002
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 256Mi
+      restartPolicy: Always
+
+  selector:
+    matchLabels:
+      app: fraud
